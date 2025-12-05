@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Colores principales */
+    --primary: #2D5F5D; /* Verde bosque */
+    --primary-foreground: #FAFAFA;
+    --accent: #C75146; /* Rojo teja */
+    --accent-foreground: #FAFAFA;
+    
+    /* Fondos */
+    --background: #FAFAFA; /* Blanco nieve */
+    --foreground: #2A2D34; /* Gris carbón */
+    
+    /* Secundarios */
+    --secondary: #F5F5F5;
+    --secondary-foreground: #2A2D34;
+    --muted: #F5F5F5;
+    --muted-foreground: #6B7280; /* Gris secundario */
+    
+    /* Estados */
+    --destructive: #C75146;
+    --destructive-foreground: #FAFAFA;
+    
+    /* Bordes e inputs */
+    --border: #E5E7EB;
+    --input: #E5E7EB;
+    --ring: #2D5F5D;
+  }
+
+  .dark {
+    /* Colores principales */
+    --primary: #2D5F5D; /* Verde bosque (se ve premium en dark) */
+    --primary-foreground: #FAFAFA;
+    --accent: #C75146; /* Rojo teja */
+    --accent-foreground: #FAFAFA;
+    
+    /* Fondos */
+    --background: #1A1D23; /* Dark background */
+    --foreground: #FAFAFA;
+    
+    /* Secundarios */
+    --secondary: #2A2D34; /* Cards en dark */
+    --secondary-foreground: #FAFAFA;
+    --muted: #2A2D34;
+    --muted-foreground: #9CA3AF;
+    
+    /* Estados */
+    --destructive: #C75146;
+    --destructive-foreground: #FAFAFA;
+    
+    /* Bordes e inputs */
+    --border: #374151;
+    --input: #374151;
+    --ring: #2D5F5D;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium;
+    line-height: 1.2;
+  }
+  
+  p {
+    line-height: 1.6;
+  }
+}
+
+/* Animaciones de copos de nieve */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: -10vh;
+  color: white;
+  opacity: 0.6;
+  animation: snowfall linear infinite;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Animaciones de entrada */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in-up-delay {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-up-delay {
+  animation: fade-in-up-delay 1s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+

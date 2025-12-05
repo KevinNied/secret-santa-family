@@ -1,0 +1,164 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Use direct connection for migrations (faster)
+}
+
+// ============================================
+// DRAW (Main entity - represents one Secret Santa event)
+// ============================================
+model Draw {
+  id         String   @id @default(uuid())
+  adminToken String   @unique @map("admin_token") // Unique token for admin access (no login required)
+  
+  // Draw Configuration
+  name           String                          // e.g., "Christmas 2025", "Family Secret Santa"
+  budget         String?                         // e.g., "$20-$50", "Máximo $30"
+  exchangeDate   DateTime?  @map("exchange_date") // When gifts will be exchanged
+  customMessage  String?    @map("custom_message") @db.Text // Organizer's message to participants
+  rules          String?    @db.Text             // Custom rules or instructions
+  
+  // Draw State
+  isComplete     Boolean    @default(false) @map("is_complete")   // Whether the draw has been executed
+  emailsSent     Boolean    @default(false) @map("emails_sent")   // Whether initial emails were sent
+  assignmentDate DateTime?  @map("assignment_date")               // When assignments were generated
+  
+  // Metadata
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  // Relations
+  participants Participant[]
+  assignments  Assignment[]
+  exclusions   Exclusion[]
+  hints        Hint[]
+
+  @@index([adminToken])
+  @@map("draws")
+}
+
+// ============================================
+// PARTICIPANT
+// ============================================
+model Participant {
+  id     String @id @default(uuid())
+  drawId String @map("draw_id")
+  
+  // Participant Info
+  name   String
+  email  String
+  token  String @unique // Unique token for participant panel access (no login required)
+  
+  // Wishlist
+  wishlist String? @db.Text // Free-text wishlist (hobbies, sizes, colors, links, etc.)
+  
+  // State Tracking
+  emailSent        Boolean   @default(false) @map("email_sent")
+  emailSentAt      DateTime? @map("email_sent_at")
+  viewedAssignment Boolean   @default(false) @map("viewed_assignment")
+  viewedAt         DateTime? @map("viewed_at")
+  
+  // Metadata
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  draw                Draw         @relation(fields: [drawId], references: [id], onDelete: Cascade)
+  assignmentsGiven    Assignment[] @relation("AssignmentGiver")
+  assignmentsReceived Assignment[] @relation("AssignmentReceiver")
+  exclusionsAs1       Exclusion[]  @relation("ExclusionParticipant1")
+  exclusionsAs2       Exclusion[]  @relation("ExclusionParticipant2")
+  hintsSent           Hint[]       @relation("HintSender")
+  hintsReceived       Hint[]       @relation("HintReceiver")
+
+  @@unique([drawId, email]) // One email per draw
+  @@index([drawId])
+  @@index([token])
+  @@map("participants")
+}
+
+// ============================================
+// ASSIGNMENT (Who gives to whom)
+// CRITICAL: Admin should NOT be able to easily query these
+// ============================================
+model Assignment {
+  id         String   @id @default(uuid())
+  drawId     String   @map("draw_id")
+  giverId    String   @map("giver_id")
+  receiverId String   @map("receiver_id")
+  
+  // Metadata
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  draw     Draw        @relation(fields: [drawId], references: [id], onDelete: Cascade)
+  giver    Participant @relation("AssignmentGiver", fields: [giverId], references: [id], onDelete: Cascade)
+  receiver Participant @relation("AssignmentReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([drawId, giverId])   // Each giver has exactly one assignment per draw
+  @@unique([drawId, receiverId]) // Each receiver is assigned to exactly one giver per draw
+  @@index([drawId])
+  @@index([giverId])
+  @@map("assignments")
+}
+
+// ============================================
+// EXCLUSION (Who cannot be assigned to whom)
+// ============================================
+model Exclusion {
+  id             String  @id @default(uuid())
+  drawId         String  @map("draw_id")
+  participant1Id String  @map("participant1_id")
+  participant2Id String  @map("participant2_id")
+  reason         String? // e.g., "couple", "siblings", "coworkers"
+
+  // Relations
+  draw         Draw        @relation(fields: [drawId], references: [id], onDelete: Cascade)
+  participant1 Participant @relation("ExclusionParticipant1", fields: [participant1Id], references: [id], onDelete: Cascade)
+  participant2 Participant @relation("ExclusionParticipant2", fields: [participant2Id], references: [id], onDelete: Cascade)
+
+  @@unique([drawId, participant1Id, participant2Id]) // Prevent duplicate exclusions
+  @@index([drawId])
+  @@map("exclusions")
+}
+
+// ============================================
+// HINT (Anonymous messages from giver to receiver)
+// ============================================
+model Hint {
+  id              String   @id @default(uuid())
+  drawId          String   @map("draw_id")
+  senderToken     String   @map("sender_token")     // Token of the giver (anonymous to receiver)
+  receiverToken   String   @map("receiver_token")   // Token of the receiver
+  
+  // Hint Content
+  message         String   @db.Text
+  
+  // State
+  emailSent       Boolean  @default(false) @map("email_sent")
+  emailSentAt     DateTime? @map("email_sent_at")
+  viewedByReceiver Boolean @default(false) @map("viewed_by_receiver")
+  viewedAt        DateTime? @map("viewed_at")
+  
+  // Metadata
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  draw     Draw        @relation(fields: [drawId], references: [id], onDelete: Cascade)
+  sender   Participant @relation("HintSender", fields: [senderToken], references: [token], onDelete: Cascade)
+  receiver Participant @relation("HintReceiver", fields: [receiverToken], references: [token], onDelete: Cascade)
+
+  @@index([drawId])
+  @@index([receiverToken])
+  @@index([senderToken])
+  @@map("hints")
+}
+

@@ -1,0 +1,27 @@
+export default function PublicLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-h-screen">
+      <nav className="border-b border-border">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <a href="/" className="text-xl font-bold">
+            🎅 Secret Santa
+          </a>
+          <div className="flex gap-4">
+            <a href="/about" className="hover:text-primary transition">
+              About
+            </a>
+            <a href="/auth/login" className="hover:text-primary transition">
+              Login
+            </a>
+          </div>
+        </div>
+      </nav>
+      {children}
+    </div>
+  );
+}
+
