@@ -75,10 +75,10 @@ export default function HomePage() {
                       Bienvenidos al <em className="text-white font-semibold">Amigo Invisible 2025</em>, la tradición más caótica, graciosa y discutida de todas nuestras fiestas.
                     </p>
                     <p className="text-base md:text-lg text-white/90 leading-relaxed">
-                      Este año, nuevamente, tenemos al tío intentando convencer a todo el mundo de que <em className="text-white font-semibold">él ya sabe quién le regala a quién</em>, porque según él las pistas "son obvias" (spoiler: nunca acierta).
+                      Este año, nuevamente, tenemos al tío intentando convencer a todo el mundo de que <em className="text-white font-semibold">él ya sabe quién le regala a quién</em>, porque según él las pistas &ldquo;son obvias&rdquo; (spoiler: nunca acierta).
                     </p>
                     <p className="text-base md:text-lg text-white/90 leading-relaxed">
-                      Así que prepárense: se acerca Navidad, las pistas vuelan, las sospechas aumentan, y siempre alguien dice <em className="text-white font-semibold">"yo ya sé quién me tiene"</em> cuando claramente no tiene ni idea.
+                      Así que prepárense: se acerca Navidad, las pistas vuelan, las sospechas aumentan, y siempre alguien dice <em className="text-white font-semibold">&ldquo;yo ya sé quién me tiene&rdquo;</em> cuando claramente no tiene ni idea.
                     </p>
                     <p className="text-base md:text-lg text-white/90 leading-relaxed">
                       Pero bueno… más allá de toda esta magia, misterio y confusión tradicional…

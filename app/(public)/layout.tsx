@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function PublicLayout({
   children,
 }: {
@@ -7,16 +9,16 @@ export default function PublicLayout({
     <div className="min-h-screen">
       <nav className="border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/" className="text-xl font-bold">
+          <Link href="/" className="text-xl font-bold">
             🎅 Secret Santa
-          </a>
+          </Link>
           <div className="flex gap-4">
-            <a href="/about" className="hover:text-primary transition">
+            <Link href="/about" className="hover:text-primary transition">
               About
-            </a>
-            <a href="/auth/login" className="hover:text-primary transition">
+            </Link>
+            <Link href="/auth/login" className="hover:text-primary transition">
               Login
-            </a>
+            </Link>
           </div>
         </div>
       </nav>

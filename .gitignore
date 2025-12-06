@@ -61,3 +61,5 @@ Thumbs.db
 # Optional: si usas otras herramientas
 .eslintcache
 .cache/
+# next.js
+.next/

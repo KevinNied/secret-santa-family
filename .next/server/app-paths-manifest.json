@@ -1,8 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/create/[drawId]/page": "app/create/[drawId]/page.js",
-  "/create/[drawId]/message/page": "app/create/[drawId]/message/page.js",
-  "/create/[drawId]/confirm/page": "app/create/[drawId]/confirm/page.js",
-  "/participant/[token]/page": "app/participant/[token]/page.js",
-  "/create/[drawId]/success/page": "app/create/[drawId]/success/page.js"
-}

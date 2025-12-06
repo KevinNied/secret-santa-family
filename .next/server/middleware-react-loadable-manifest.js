@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"app/create/[drawId]/confirm/page.tsx -> @/actions/draws/participants\":{\"id\":\"app/create/[drawId]/confirm/page.tsx -> @/actions/draws/participants\",\"files\":[]}}"

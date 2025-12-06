@@ -90,6 +90,9 @@ export async function getAssignment(participantToken: string) {
         draw: {
           select: {
             isComplete: true,
+            name: true,
+            budget: true,
+            customMessage: true,
           },
         },
       },

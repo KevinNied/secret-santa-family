@@ -191,7 +191,6 @@ export async function getExclusions(drawId: string) {
           select: { id: true, name: true, email: true },
         },
       },
-      orderBy: { createdAt: 'asc' },
     })
 
     if (isDev) {
