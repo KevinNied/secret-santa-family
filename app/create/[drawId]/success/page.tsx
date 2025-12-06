@@ -76,7 +76,8 @@ export default function SuccessPage() {
                   <Button
                     onClick={handleCopy}
                     size="sm"
-                    className="bg-[#D4AF37] hover:bg-[#E8C55B] text-white shrink-0"
+                    className="bg-[#D4AF37] hover:bg-[#E8C55B] text-white shrink-0 focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2 focus:ring-offset-transparent"
+                    aria-label="Copiar link de administración"
                   >
                     {copied ? (
                       <>
